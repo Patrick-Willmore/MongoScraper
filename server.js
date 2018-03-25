@@ -1,38 +1,54 @@
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
-
-// Using this template, the cheerio documentation,
-// and what you've learned in class so far, scrape a website
-// of your choice, save information from the page in a result array, and log it to the console.
-
-var cheerio = require("cheerio");
+var mongoose = require('mongoose');
 var request = require("request");
+var cheerio = require("cheerio");
+var logger = require("logger");
+var express = require("express");
+var app = express();
 
-// Make a request call to grab the HTML body from the site of your choice
-request("https://www.reddit.com/r/Denver/", function(error, response, html) {
 
-  // Load the HTML into cheerio and save it to a variable
-  // '$' becomes a shorthand for cheerio's selector commands, much like jQuery's '$'
-  var $ = cheerio.load(html);
+app.use(logger('dev'));
+app.use(bodyParser.urlencoded({
+    extended:false
+}));
 
-  // An empty array to save the data that we'll scrape
-  var results = [];
+app.use(express.static('public'));
+var databaseUrl = 'mongodb://127.0.0.1:27017';
 
-  // Select each element in the HTML body from which you want information.
-  // NOTE: Cheerio selectors function similarly to jQuery's selectors,
-  // but be sure to visit the package's npm page to see how it works
-  $("p.title").each(function(i, element) {
+if (process.env.MONGODB_URI) {
+    mongoose.connect(process.env.MONGODB_URI);
+} else {
+    mongoose.connect(databaseUrl);
+}
 
-    var link = $(element).children().attr("href");
-    var title = $(element).children().text();
+var db = mongoose.connection;
 
-    // Save these results in an object that we'll push into the results array we defined earlier
-    results.push({
-      title: title,
-      link: link
-    });
-  });
+db.on('error', function(err){
+    console.log('Mongoose error: ', err);
 
-  // Log the results once you've looped through each of the elements found with cheerio
-  console.log(results);
 });
 
+db.once('open', function(){
+    console.log('mongoose connection successful.');
+});
+
+
+// request("https://www.reddit.com/r/Denver/", function(error, response, html) {
+
+//   var $ = cheerio.load(html);
+
+//   var results = [];
+
+//   $("p.title").each(function(i, element) {
+
+//     var link = $(element).children().attr("href");
+//     var title = $(element).children().text();
+
+
+//     results.push({
+//       title: title,
+//       link: link
+//     });
+//   });
+
+//   console.log(results);
+// });

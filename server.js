@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(express.static('public'));
-var databaseUrl = 'mongodb://127.0.0.1:27017';
+var databaseUrl = 'mongodb://<heroku_n51t2td9>:<knob27>@ds223609.mlab.com:23609/heroku_n51t2td9';
 
 if (process.env.MONGODB_URI) {
     mongoose.connect(process.env.MONGODB_URI);

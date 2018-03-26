@@ -7,27 +7,16 @@ var logger = require("logger");
 var express = require("express");
 var exphbs  = require('express-handlebars');
 
+// require("./routes/apiRoutes")(app);
+require("./routes/htmlRoutes")(app);
+
 var app = express();
 
-app.set('views', config.root + './views');
 
-var exphbs = require('express-handlebars');
-app.engine('.hbs', exphbs({
-        defaultLayout: 'main', 
-        extname: '.hbs',
-        layoutsDir:'./views/layouts',
-        // partialsDir:'server/views/partials'
-}));
-app.set('view engine', '.hbs');
 
-// Routes
-app.get('/', function (req, res) {
-    res.render('home');
-});
 
-app.listen(8888);
 
-app.use(logger('dev'));
+
 app.use(bodyParser.urlencoded({
     extended:false
 }));

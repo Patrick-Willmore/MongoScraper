@@ -6,12 +6,13 @@ var cheerio = require("cheerio");
 var logger = require("logger");
 var express = require("express");
 var exphbs  = require('express-handlebars');
+var bodyParser = require('body-parser');
+
+var app = express();
+const port = process.env.PORT || 3000
 
 // require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
-
-var app = express();
-
 
 
 
@@ -22,7 +23,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(express.static('public'));
-var databaseUrl = 'mongodb://<heroku_n51t2td9>:<T[8jD%4ee9n[WM-S>@ds223609.mlab.com:23609/heroku_n51t2td9';
+var databaseUrl = 'mongodb://heroku_n51t2td9:evan1sawesome.mlab.com:23609/heroku_n51t2td9';
 
 if (process.env.MONGODB_URI) {
     mongoose.connect(process.env.MONGODB_URI);
@@ -39,6 +40,10 @@ db.on('error', function(err){
 
 db.once('open', function(){
     console.log('mongoose connection successful.');
+});
+
+app.listen(port, function(){
+    console.log("App listening on PORT " + port);
 });
 
 

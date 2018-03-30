@@ -1,13 +1,13 @@
-const express = require('express');
+// const express = require('express');
 
-const route = express.Router();
+// const route = express.Router();
  
 
-route.get('/', (req, res, next)=> {
+// route.get('/', (req, res, next)=> {
 
-    res.render('../views/layouts/main.handlebars');
-});
+//     res.render('/../public/home.html');
+// });
 
 
 
-module.exports = route;
+// module.exports = route;

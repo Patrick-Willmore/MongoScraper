@@ -2,7 +2,7 @@
 
 var mongoose = require('mongoose');
 var request = require("request");
-var cheerio = require("cheerio");
+
 var logger = require("logger");
 var express = require("express");
 var exphbs  = require('express-handlebars');
@@ -15,33 +15,49 @@ const port = process.env.PORT || 3000
 require("./routes/htmlRoutes")(app);
 
 
+var cheerio = require("cheerio");
 
 
+
+
+app.use(express.static('public'));
+var databaseUrl = 'mongodb://heroku_n51t2td9:evan1sawesome.mlab.com:23609/heroku_n51t2td9';
+
+// mongoose.Promise = Promise;
+// mongoose.connect(databaseUrl, {
+//   useMongoClient: true
+// });
+
+// if (process.env.MONGODB_URI) {
+//     mongoose.connect(process.env.MONGODB_URI);
+// } else {
+//     mongoose.connect(databaseUrl);
+// }
+
+var db = process.env.databaseUrl || "mongodb://localhost/300";
+
+
+// db.on('error', function(err){
+//     console.log('Mongoose error: ', err);
+
+// });
+
+// db.once('open', function(){
+//     console.log('mongoose connection successful.');
+// });
 
 app.use(bodyParser.urlencoded({
     extended:false
 }));
 
-app.use(express.static('public'));
-var databaseUrl = 'mongodb://heroku_n51t2td9:evan1sawesome.mlab.com:23609/heroku_n51t2td9';
-
-if (process.env.MONGODB_URI) {
-    mongoose.connect(process.env.MONGODB_URI);
-} else {
-    mongoose.connect(databaseUrl);
-}
-
-var db = mongoose.connection;
-
-db.on('error', function(err){
-    console.log('Mongoose error: ', err);
-
+mongoose.connect(db, function(error) {
+    if (error) {
+        console.log(error);
+    }
+    else {
+        console.log("mongoose is connected");
+    }
 });
-
-db.once('open', function(){
-    console.log('mongoose connection successful.');
-});
-
 app.listen(port, function(){
     console.log("App listening on PORT " + port);
 });

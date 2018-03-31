@@ -1,5 +1,5 @@
-var cheerio = require("cheerio");
-var request = require("request");
+require ('../server.js');
+
 
 
 // Make a request call to grab the HTML body from the site of your choice
@@ -30,3 +30,4 @@ request("https://www.reddit.com/r/Denver/", function(error, response, html) {
   // Log the results once you've looped through each of the elements found with cheerio
   console.log(results);
 });
+
